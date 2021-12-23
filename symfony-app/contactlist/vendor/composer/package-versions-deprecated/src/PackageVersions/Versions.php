@@ -88,10 +88,12 @@ final class Versions
   'symfony/var-dumper' => 'v5.4.1@2366ac8d8abe0c077844613c1a4f0c0a9f522dcc',
   'symfony/var-exporter' => 'v5.4.0@d59446d6166b1643a8a3c30c2fa8e16e51cdbde7',
   'symfony/yaml' => 'v5.4.0@034ccc0994f1ae3f7499fa5b1f2e75d5e7a94efc',
-  'symfony/polyfill-ctype' => '*@2937786aa02ff67cf62963349126e4ce3a30ea9d',
-  'symfony/polyfill-iconv' => '*@2937786aa02ff67cf62963349126e4ce3a30ea9d',
-  'symfony/polyfill-php72' => '*@2937786aa02ff67cf62963349126e4ce3a30ea9d',
-  '__root__' => 'dev-master@2937786aa02ff67cf62963349126e4ce3a30ea9d',
+  'nikic/php-parser' => 'v4.13.2@210577fe3cf7badcc5814d99455df46564f3c077',
+  'symfony/maker-bundle' => 'v1.36.4@716eee9c8b10b33e682df1b7d80b9061887e9691',
+  'symfony/polyfill-ctype' => '*@',
+  'symfony/polyfill-iconv' => '*@',
+  'symfony/polyfill-php72' => '*@',
+  '__root__' => '1.0.0+no-version-set@',
 );
 
     private function __construct()
