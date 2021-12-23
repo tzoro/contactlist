@@ -165,3 +165,12 @@ $classes[] = 'Symfony\Component\HttpKernel\EventListener\StreamedResponseListene
 $classes[] = 'Symfony\Component\HttpKernel\EventListener\ValidateRequestListener';
 
 $preloaded = Preloader::preload($classes);
+
+$classes = [];
+$classes[] = 'Symfony\\Component\\Routing\\Generator\\CompiledUrlGenerator';
+$classes[] = 'Symfony\\Bundle\\FrameworkBundle\\Routing\\RedirectableCompiledUrlMatcher';
+$classes[] = 'Doctrine\\ORM\\Mapping\\Entity';
+$classes[] = 'Doctrine\\ORM\\Mapping\\Id';
+$classes[] = 'Doctrine\\ORM\\Mapping\\GeneratedValue';
+$classes[] = 'Doctrine\\ORM\\Mapping\\Column';
+$preloaded = Preloader::preload($classes, $preloaded);
