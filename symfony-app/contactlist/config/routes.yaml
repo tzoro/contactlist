@@ -6,6 +6,10 @@ new:
     path:       /new
     controller: App\Controller\AppController::new
     methods:    GET
+update:
+    path:       /update/{id}
+    controller: App\Controller\AppController::update
+    methods:    POST
 create:
     path:       /
     controller: App\Controller\AppController::create
@@ -18,10 +22,6 @@ read:
     path:       /{id}
     controller: App\Controller\AppController::read
     methods:    GET
-update:
-    path:       /{id}
-    controller: App\Controller\AppController::update
-    methods:    PATCH
 delete:
     path:       /{id}
     controller: App\Controller\AppController::delete

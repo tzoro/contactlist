@@ -29,9 +29,19 @@ class AppController extends AbstractController
         ]);
     }
 
-    public function edit(): Response
+    public function edit(int $id): Response
     {
-        return $this->render('entity/edit.html.twig');
+        $item = new Contact();
+        $repository = $this->getDoctrine()->getRepository(Contact::class);
+
+        $entity = $repository->findOneBy([
+            'id' => $id
+        ]);
+        $form = $this->createForm(EntityitemType::class, $entity);
+
+        return $this->renderForm('entity/edit.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     public function new(): Response
@@ -51,8 +61,18 @@ class AppController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // d('valid');exit;
-            // ... do your form processing, like saving the Task and Tag entities
+
+            $itemData = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $item->setFirstName($itemData->getFirstName());
+            $item->setLastName($itemData->getLastName());
+            $item->setPhoto($itemData->getPhoto());
+            $item->setFavourite($itemData->getFavourite());
+
+            $entityManager->persist($item);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('index');
         }
         
         return $this->renderForm('entity/new.html.twig', [
@@ -72,9 +92,31 @@ class AppController extends AbstractController
         ]);
     }
 
-    public function update(): Response
+    public function update(Request $request, int $id): Response
     {
 
+        $repository = $this->getDoctrine()->getRepository(Contact::class);
+        $entity = $repository->findOneBy([
+            'id' => $id
+        ]);
+        $form = $this->createForm(EntityitemType::class, $entity);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $itemData = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entity->setFirstName($itemData->getFirstName());
+            $entity->setLastName($itemData->getLastName());
+            $entity->setPhoto($itemData->getPhoto());
+            $entity->setFavourite($itemData->getFavourite());
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('index');
+        }
+
+        return $this->redirectToRoute('index');
     }
 
     public function delete(): Response

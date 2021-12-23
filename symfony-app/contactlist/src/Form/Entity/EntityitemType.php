@@ -11,18 +11,37 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use App\Entity\Contact;
+
 class EntityitemType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->setAction('/')
-            ->setMethod('POST')
-            ->add('FirstName', TextType::class)
-            ->add('LastName', TextType::class, [ 'required' => false ])
-            ->add('Photo', FileType::class, [ 'required' => false ])
-            ->add('Favourite', CheckboxType::class, [ 'required' => false ])
-            ->add('save', SubmitType::class, ['label' => 'Save'])
-        ;
+
+      $FirstName = NULL;
+      $LastName = NULL;
+      $Photo = NULL;
+      $Favourite = false;
+
+      if(isset($options['data'])
+        && $options['data']->getId() > 0) {
+
+        $builder->setAction('/update/' . $options['data']->getId());
+
+        $FirstName = $options['data']->getFirstName();
+        $LastName = $options['data']->getLastName();
+        $Photo = $options['data']->getPhoto();
+        $Favourite = $options['data']->getFavourite();
+      } else {
+        $builder->setAction('/');
+      }
+
+      $builder
+        ->setMethod('POST')
+        ->add('FirstName', TextType::class, [ 'empty_data' => $FirstName ])
+        ->add('LastName', TextType::class, [ 'required' => false, 'empty_data' => $LastName ])
+        ->add('Photo', FileType::class, [ 'required' => false, 'empty_data' => $Photo ])
+        ->add('Favourite', CheckboxType::class, [ 'required' => false, 'empty_data' => $Favourite ])
+        ->add('save', SubmitType::class, ['label' => 'Save']);
     }
 }
