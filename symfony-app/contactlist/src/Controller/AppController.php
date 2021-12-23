@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Contact;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+use App\Form\Entity\EntityitemType;
 
 class AppController extends AbstractController
 {
@@ -33,31 +36,28 @@ class AppController extends AbstractController
 
     public function new(): Response
     {
-        $task = new Contact();
-
-        $form = $this->createFormBuilder($task)
-            ->setAction($this->generateUrl('create'))
-            ->setMethod('POST')
-            ->add('FirstName', TextType::class)
-            ->add('LastName', TextType::class)
-            ->add('Photo', FileType::class)
-            ->add('Favourite', CheckboxType::class)
-            ->add('save', SubmitType::class, ['label' => 'Save'])
-            ->getForm();
+        $item = new Contact();
+        $form = $this->createForm(EntityitemType::class, $item);
 
         return $this->renderForm('entity/new.html.twig', [
             'form' => $form,
         ]);
     }
 
-    public function create(): Response
+    public function create(Request $request): Response
     {
-      // $entityManager = $this->getDoctrine()->getManager();
-      // $repo = new Contact();
-      // $repo->setFirstName('tzoro');
-      
-      // $entityManager->persist($repo);
-      // $entityManager->flush();
+        $item = new Contact();
+        $form = $this->createForm(EntityitemType::class, $item);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // d('valid');exit;
+            // ... do your form processing, like saving the Task and Tag entities
+        }
+        
+        return $this->renderForm('entity/new.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     public function read(int $id): Response
