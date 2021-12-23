@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Contact;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AppController extends AbstractController
@@ -34,8 +36,13 @@ class AppController extends AbstractController
         $task = new Contact();
 
         $form = $this->createFormBuilder($task)
+            ->setAction($this->generateUrl('create'))
+            ->setMethod('POST')
             ->add('FirstName', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Task'])
+            ->add('LastName', TextType::class)
+            ->add('Photo', FileType::class)
+            ->add('Favourite', CheckboxType::class)
+            ->add('save', SubmitType::class, ['label' => 'Save'])
             ->getForm();
 
         return $this->renderForm('entity/new.html.twig', [
