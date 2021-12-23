@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,16 @@ class Contact
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $Favourite;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ContactPhone::class, mappedBy="Contact")
+     */
+    private $contactPhones;
+
+    public function __construct()
+    {
+        $this->contactPhones = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +98,36 @@ class Contact
     public function setFavourite(?bool $Favourite): self
     {
         $this->Favourite = $Favourite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ContactPhone[]
+     */
+    public function getContactPhones(): Collection
+    {
+        return $this->contactPhones;
+    }
+
+    public function addContactPhone(ContactPhone $contactPhone): self
+    {
+        if (!$this->contactPhones->contains($contactPhone)) {
+            $this->contactPhones[] = $contactPhone;
+            $contactPhone->setContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContactPhone(ContactPhone $contactPhone): self
+    {
+        if ($this->contactPhones->removeElement($contactPhone)) {
+            // set the owning side to null (unless already changed)
+            if ($contactPhone->getContact() === $this) {
+                $contactPhone->setContact(null);
+            }
+        }
 
         return $this;
     }
