@@ -14,8 +14,8 @@ class AppController extends AbstractController
      */
     public function index(): Response
     {
-      $repository = $this->getDoctrine()->getRepository(Contact::class);
-      $items = $repository->findAll();
+        $repository = $this->getDoctrine()->getRepository(Contact::class);
+        $items = $repository->findAll();
 
         return $this->render('entity/index.html.twig', [
             'items' => $items,
