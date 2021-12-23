@@ -14,32 +14,43 @@ class AppController extends AbstractController
      */
     public function index(): Response
     {
-
-
-
-      $entityManager = $this->getDoctrine()->getManager();
-      $repo = new Contact();
-      $repo->setFirstName('tzoro');
-      
-      $entityManager->persist($repo);
-      $entityManager->flush();
-
-
       $repository = $this->getDoctrine()->getRepository(Contact::class);
-      $cached = $repository->findAll();
-      // d($cached);exit;
+      $items = $repository->findAll();
 
-        return $this->render('test/index.html.twig', [
-            // this array defines the variables passed to the template,
-            // where the key is the variable name and the value is the variable value
-            // (Twig recommends using snake_case variable names: 'foo_bar' instead of 'fooBar')
-            'users' => $cached,
-            'notifications' => 2,
+        return $this->render('entity/index.html.twig', [
+            'items' => $items,
+        ]);
+    }
+
+    public function create(): Response
+    {
+      // $entityManager = $this->getDoctrine()->getManager();
+      // $repo = new Contact();
+      // $repo->setFirstName('tzoro');
+      
+      // $entityManager->persist($repo);
+      // $entityManager->flush();
+    }
+
+    public function read(int $id): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Contact::class);
+        $entity = $repository->findOneBy([
+            'id' => $id
         ]);
 
-        // return $this->json([
-        //     'message' => 'Welcome to your new controller!',
-        //     'path' => 'src/Controller/AppController.php',
-        // ]);
+        return $this->render('entity/show.html.twig', [
+            'entity' => $entity
+        ]);
+    }
+
+    public function update(): Response
+    {
+
+    }
+
+    public function delete(): Response
+    {
+
     }
 }

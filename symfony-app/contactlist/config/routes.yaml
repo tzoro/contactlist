@@ -1,20 +1,20 @@
 index:
-   path: /
-   controller: App\Controller\AppController::index
-      methods:  GET
+    path:       /
+    controller: App\Controller\AppController::index
+    methods:    GET
 create:
-   path: /
-   controller: App\Controller\AppController::create
-      methods:  POST
+    path:       /
+    controller: App\Controller\AppController::create
+    methods:    POST
 read:
-   path: /{id}
-   controller: App\Controller\AppController::read
-      methods:  GET
+    path:       /{id}
+    controller: App\Controller\AppController::read
+    methods:    GET
 update:
-   path: /{id}
-   controller: App\Controller\AppController::update
-      methods:  PATCH
+    path:       /{id}
+    controller: App\Controller\AppController::update
+    methods:    PATCH
 delete:
-   path: /{id}
-   controller: App\Controller\AppController::delete
-      methods:  DELETE
+    path:       /{id}
+    controller: App\Controller\AppController::delete
+    methods:    DELETE
