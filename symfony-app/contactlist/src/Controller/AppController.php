@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Contact;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AppController extends AbstractController
 {
@@ -19,6 +21,25 @@ class AppController extends AbstractController
 
         return $this->render('entity/index.html.twig', [
             'items' => $items,
+        ]);
+    }
+
+    public function edit(): Response
+    {
+        return $this->render('entity/edit.html.twig');
+    }
+
+    public function new(): Response
+    {
+        $task = new Contact();
+
+        $form = $this->createFormBuilder($task)
+            ->add('FirstName', TextType::class)
+            ->add('save', SubmitType::class, ['label' => 'Create Task'])
+            ->getForm();
+
+        return $this->renderForm('entity/new.html.twig', [
+            'form' => $form,
         ]);
     }
 

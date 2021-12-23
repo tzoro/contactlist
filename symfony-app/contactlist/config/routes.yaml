@@ -2,10 +2,18 @@ index:
     path:       /
     controller: App\Controller\AppController::index
     methods:    GET
+new:
+    path:       /new
+    controller: App\Controller\AppController::new
+    methods:    GET
 create:
     path:       /
     controller: App\Controller\AppController::create
     methods:    POST
+edit:
+    path:       /edit/{id}
+    controller: App\Controller\AppController::edit
+    methods:    GET
 read:
     path:       /{id}
     controller: App\Controller\AppController::read
