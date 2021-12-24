@@ -140,8 +140,21 @@ class AppController extends AbstractController
         ]);
     }
 
-    public function delete(): Response
+    public function delete(Request $request): Response
     {
+        $id = $request->get('id');
 
+        $repository = $this->getDoctrine()->getRepository(Contact::class);
+        $entity = $repository->findOneBy([
+            'id' => $id
+        ]);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($entity);
+        $entityManager->flush();
+
+        return $this->json([
+            'status' => 'ok'
+        ]);
     }
 }

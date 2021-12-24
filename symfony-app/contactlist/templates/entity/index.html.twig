@@ -37,7 +37,7 @@
             <a href="/edit/{{ item.id }}">Edit</a>
           </td>
           <td>
-            <a href="/{{ item.id }}">Delete</a>
+            <a data-elemid="{{ item.id }}" class="elemdel" href="#">Delete</a>
           </td>
         </tr>
         {% endfor %}
@@ -56,6 +56,19 @@
         .done(function( data ) {
           window.location.reload();
         });
+    });
+
+    $('.elemdel').on('click', function(){
+      
+      var elemid = $(this).data('elemid');
+
+      $.ajax({
+          url: '/' + elemid,
+          type: 'DELETE',
+          success: function(result) {
+            window.location.reload();
+          }
+      });
     });
   });
 </script>

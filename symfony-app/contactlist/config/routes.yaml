@@ -6,6 +6,10 @@ new:
     path:       /new
     controller: App\Controller\AppController::new
     methods:    GET
+ajaxupdate:
+    path:       /updatefav
+    controller: App\Controller\AppController::ajaxupdate
+    methods:    POST
 update:
     path:       /update/{id}
     controller: App\Controller\AppController::update
