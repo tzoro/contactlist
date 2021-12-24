@@ -19,10 +19,15 @@ class AppController extends AbstractController
     /**
      * @Route("/app", name="app")
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository(Contact::class);
-        $items = $repository->findAll();
+
+        if( $request->get('fav') == '1' ) {
+            $items = $repository->findBy(['Favourite' => true]); 
+        } else {
+            $items = $repository->findAll();
+        }
 
         return $this->render('entity/index.html.twig', [
             'items' => $items,
