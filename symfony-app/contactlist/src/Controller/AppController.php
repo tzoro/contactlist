@@ -119,6 +119,27 @@ class AppController extends AbstractController
         return $this->redirectToRoute('index');
     }
 
+    public function ajaxupdate(Request $request): Response
+    {        
+        $id              = $request->get('id');
+        $currentValue    = $request->get('val');
+
+        $repository = $this->getDoctrine()->getRepository(Contact::class);
+        $entity = $repository->findOneBy([
+            'id' => $id
+        ]);
+
+        $newValue = $currentValue == '1' ? false : true;
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entity->setFavourite($newValue);
+        $entityManager->flush();
+
+        return $this->json([
+            'status' => 'ok'
+        ]);
+    }
+
     public function delete(): Response
     {
 

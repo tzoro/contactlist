@@ -1,48 +1,62 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col"></th>
-            <th scope="col">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-              </svg>
-            </th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in items %}
-          <tr>
-            <td>
-              <a href="/{{ item.id }}">
-                {{ item.FirstName }} {{ item.LastName }}
-              </a>
-            </td>
-            <td></td>
-            <td>
-              {% if item.Favourite is not empty and item.Favourite == '1' %}
-                <input class="form-check-input" type="checkbox" value="" id="" checked>
-              {% else %}
-                <input class="form-check-input" type="checkbox" value="" id="">
-              {% endif %}
-            </td>
-            <td>
-              <a href="/edit/{{ item.id }}">Edit</a>
-            </td>
-            <td>
-              <a href="/{{ item.id }}">Delete</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </main>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col"></th>
+          <th scope="col">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg>
+          </th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <a href="/{{ item.id }}">
+              {{ item.FirstName }} {{ item.LastName }}
+            </a>
+          </td>
+          <td></td>
+          <td>
+            {% if item.Favourite is not empty and item.Favourite == '1' %}
+              <input data-elemid="{{ item.id }}" class="form-check-input" type="checkbox" value="1" checked>
+            {% else %}
+              <input data-elemid="{{ item.id }}" class="form-check-input" type="checkbox" value="0">
+            {% endif %}
+          </td>
+          <td>
+            <a href="/edit/{{ item.id }}">Edit</a>
+          </td>
+          <td>
+            <a href="/{{ item.id }}">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</main>
+<script type="text/javascript">
+  $( document ).ready(function() {
+    $('.form-check-input').on('click', function(){
+
+      var elemid  = $(this).data('elemid');
+      var elemval = $(this).val();
+
+      $.post( "/updatefav", { id: elemid, val: elemval })
+        .done(function( data ) {
+          window.location.reload();
+        });
+    });
+  });
+</script>
 {% endblock %}
