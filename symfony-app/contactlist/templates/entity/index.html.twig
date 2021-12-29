@@ -62,13 +62,15 @@
       
       var elemid = $(this).data('elemid');
 
-      $.ajax({
-          url: '/' + elemid,
-          type: 'DELETE',
-          success: function(result) {
-            window.location.reload();
-          }
-      });
+      if (confirm('Are you sure you want to delete record?')) {
+        $.ajax({
+            url: '/' + elemid,
+            type: 'DELETE',
+            success: function(result) {
+              window.location.reload();
+            }
+        });
+      }
     });
   });
 </script>

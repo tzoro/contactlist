@@ -40,7 +40,7 @@ class Contact
     private $Favourite;
 
     /**
-     * @ORM\OneToMany(targetEntity=ContactPhone::class, mappedBy="Contact")
+     * @ORM\OneToMany(targetEntity=ContactPhone::class, mappedBy="Contact", cascade={"remove"})
      */
     private $contactPhones;
 
