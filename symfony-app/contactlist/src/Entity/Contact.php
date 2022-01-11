@@ -40,9 +40,14 @@ class Contact
     private $Favourite;
 
     /**
-     * @ORM\OneToMany(targetEntity=ContactPhone::class, mappedBy="Contact", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity=ContactPhone::class, mappedBy="Contact", cascade={"persist"})
      */
     private $contactPhones;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $PhotoUrl;
 
     public function __construct()
     {
@@ -128,6 +133,18 @@ class Contact
                 $contactPhone->setContact(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhotoUrl(): ?string
+    {
+        return $this->PhotoUrl;
+    }
+
+    public function setPhotoUrl(?string $PhotoUrl): self
+    {
+        $this->PhotoUrl = $PhotoUrl;
 
         return $this;
     }

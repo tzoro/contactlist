@@ -10,8 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use App\Entity\Contact;
+use App\Form\Entity\PhoneType;
 
 class EntityitemType extends AbstractType
 {
@@ -40,8 +42,13 @@ class EntityitemType extends AbstractType
         ->setMethod('POST')
         ->add('FirstName', TextType::class, [ 'empty_data' => $FirstName ])
         ->add('LastName', TextType::class, [ 'required' => false, 'empty_data' => $LastName ])
-        ->add('Photo', FileType::class, [ 'required' => false, 'empty_data' => $Photo ])
-        ->add('Favourite', CheckboxType::class, [ 'required' => false, 'empty_data' => $Favourite ])
+        ->add('Photo', FileType::class, [ 'required' => false, 'mapped' => false ])
+        ->add('Favourite', CheckboxType::class, [ 'required' => false ])
+        ->add('contactPhones', CollectionType::class, [
+            'entry_type' => PhoneType::class,
+            'entry_options' => ['label' => false],
+            'allow_add' => true,
+        ])
         ->add('save', SubmitType::class, ['label' => 'Save']);
     }
 }

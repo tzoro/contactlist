@@ -7,10 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Contact;
+use App\Entity\ContactPhone;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use App\Form\Entity\EntityitemType;
 
@@ -52,6 +54,10 @@ class AppController extends AbstractController
     public function new(): Response
     {
         $item = new Contact();
+
+        $phone1 = new ContactPhone();
+        $item->getContactPhones()->add($phone1);
+
         $form = $this->createForm(EntityitemType::class, $item);
 
         return $this->renderForm('entity/new.html.twig', [
@@ -59,7 +65,7 @@ class AppController extends AbstractController
         ]);
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request, SluggerInterface $slugger): Response
     {
         $item = new Contact();
         $form = $this->createForm(EntityitemType::class, $item);
@@ -68,10 +74,31 @@ class AppController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $itemData = $form->getData();
+            $photo = $form['Photo']->getData();
+            $newFilename = null;
+
+            if(!is_null($photo)){
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photo->guessExtension();
+
+                try {
+                    $photo->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $logger->error('Photo upload error');
+                }
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $item->setFirstName($itemData->getFirstName());
             $item->setLastName($itemData->getLastName());
-            $item->setPhoto($itemData->getPhoto());
+
+            if(!is_null($newFilename)){
+                $item->setPhotoUrl($newFilename);
+            }
             $item->setFavourite($itemData->getFavourite());
 
             $entityManager->persist($item);
