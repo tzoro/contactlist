@@ -44,6 +44,8 @@ class AppController extends AbstractController
         $entity = $repository->findOneBy([
             'id' => $id
         ]);
+        $phone1 = new ContactPhone();
+        $entity->getContactPhones()->add($phone1);
         $form = $this->createForm(EntityitemType::class, $entity);
 
         return $this->renderForm('entity/edit.html.twig', [

@@ -12,6 +12,8 @@
     <input type="checkbox" checked />
   {% endif %}
   <hr>
-  <img src="{{ asset('uploads/brochures/' ~ entity.PhotoUrl) }}">
+  {% if entity.PhotoUrl is not empty and entity.PhotoUrl != null %}
+    <img src="{{ asset('uploads/brochures/' ~ entity.PhotoUrl) }}">
+  {% endif %}
 </main>
 {% endblock %}
